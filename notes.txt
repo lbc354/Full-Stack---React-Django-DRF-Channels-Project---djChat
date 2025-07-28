@@ -1,2 +1,3 @@
 pip install django djangorestframework python-dotenv
 django-admin startproject djchat
+python manage.py startapp server
