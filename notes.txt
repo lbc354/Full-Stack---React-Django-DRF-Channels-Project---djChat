@@ -1,4 +1,8 @@
-pip install django djangorestframework python-dotenv
+pip install django djangorestframework python-dotenv drf-spectacular
 django-admin startproject djchat
 python manage.py startapp server
 python manage.py startapp account
+
+https://drf-spectacular.readthedocs.io/en/latest/readme.html#installation
+https://drf-spectacular.readthedocs.io/en/latest/readme.html#take-it-for-a-spin
+python manage.py spectacular --color --file schema.yml
