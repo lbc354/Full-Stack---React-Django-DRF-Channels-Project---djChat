@@ -8,6 +8,14 @@ def category_icon_upload_path(instance, filename):
     return f"category/{instance.id}/category_icon/{filename}"
 
 
+def channel_banner_upload_path(instance, filename):
+    return f"channel/{instance.id}/channel_banners/{filename}"
+
+
+def channel_icon_upload_path(instance, filename):
+    return f"channel/{instance.id}/channel_icons/{filename}"
+
+
 class Category(models.Model):
     # Name of the category (required, max length 100 characters)
     name = models.CharField(max_length=100)
@@ -79,10 +87,28 @@ class Channel(models.Model):
     server = models.ForeignKey(
         Server, on_delete=models.CASCADE, related_name="channel_server"
     )
+    banner = models.ImageField(
+        upload_to=channel_banner_upload_path, null=True, blank=True
+    )
+    icon = models.ImageField(upload_to=channel_icon_upload_path, null=True, blank=True)
 
     def save(self, *args, **kwargs):
         self.name = self.name.lower()
+        if self.id:
+            existing = get_object_or_404(Channel, id=self.id)
+            if existing.banner != self.banner:
+                existing.banner.delete(save=False)
+            if existing.icon != self.icon:
+                existing.icon.delete(save=False)
         super(Channel, self).save(*args, **kwargs)
+
+    @receiver(models.signals.pre_delete, sender="server.Channel")
+    def channel_delete_files(sender, instance, *args, **kwargs):
+        for field in instance._meta.fields:
+            if field.name == "icon" or field.name == "banner":
+                file = getattr(instance, field.name)
+                if file:
+                    file.delete(save=False)
 
     def __str__(self):
         return self.name

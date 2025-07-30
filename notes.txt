@@ -1,4 +1,4 @@
-pip install django djangorestframework python-dotenv drf-spectacular
+pip install django djangorestframework python-dotenv drf-spectacular pillow
 django-admin startproject djchat
 python manage.py startapp server
 python manage.py startapp account
