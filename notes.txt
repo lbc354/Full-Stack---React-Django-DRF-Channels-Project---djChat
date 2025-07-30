@@ -1,8 +1,17 @@
-pip install django djangorestframework python-dotenv drf-spectacular pillow
-django-admin startproject djchat
-python manage.py startapp server
-python manage.py startapp account
+# backend:
+.\ -> pip install django djangorestframework python-dotenv drf-spectacular pillow
+.\ -> django-admin startproject djchat
+.\djchat\ -> python manage.py startapp server
+.\djchat\ -> python manage.py startapp account
 
 https://drf-spectacular.readthedocs.io/en/latest/readme.html#installation
 https://drf-spectacular.readthedocs.io/en/latest/readme.html#take-it-for-a-spin
 python manage.py spectacular --color --file schema.yml
+
+# djangorestframework, like drf-spectacular, has specific configurations to set in settings.py
+
+
+
+# frontend:
+.\ -> npm create vite -> (project name = vite-djchat)
+.\vite-djchat\ -> npm install
