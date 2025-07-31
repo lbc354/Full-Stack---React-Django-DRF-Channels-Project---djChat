@@ -16,3 +16,5 @@ python manage.py spectacular --color --file schema.yml
 .\ -> npm create vite -> (project name = vite-djchat)
 .\vite-djchat\ -> npm install
 .\vite-djchat\ -> npm install react-router-dom
+.\vite-djchat\ -> npm install @mui/material @emotion/react @emotion/styled
+.\vite-djchat\ -> npm install @mui/icons-material
