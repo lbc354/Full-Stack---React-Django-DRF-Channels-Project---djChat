@@ -74,7 +74,6 @@ const PrimaryDraw = () => {
                             {i + 1}
                         </Typography>
                     ))}
-
                 </Box>
             </Box>
         </Drawer>
