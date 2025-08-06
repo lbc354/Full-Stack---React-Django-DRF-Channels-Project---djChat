@@ -15,7 +15,7 @@ declare module "@mui/material/styles" {
     }
     interface ThemeOptions {
         primaryAppBar: {
-            height: number // ? = optional
+            height: number
         }
         primaryDraw: {
             width: number
