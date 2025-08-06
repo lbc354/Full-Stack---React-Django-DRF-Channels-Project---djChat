@@ -43,12 +43,12 @@ const PrimaryDraw = () => {
         whiteSpace: "nowrap",
         boxSizing: "border-box",
         ...(open && {
-            ...openedMixin(theme),
-            "& .MuiDrawer-paper": openedMixin(theme),
+            ...openedMixin(),
+            "& .MuiDrawer-paper": openedMixin(),
         }),
         ...(!open && {
-            ...closedMixin(theme),
-            "& .MuiDrawer-paper": closedMixin(theme),
+            ...closedMixin(),
+            "& .MuiDrawer-paper": closedMixin(),
         }),
     }))
 
