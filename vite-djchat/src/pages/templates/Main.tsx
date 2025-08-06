@@ -7,7 +7,7 @@ const Main = () => {
     return (
         <Box sx={{
             flexGrow: 1,
-            mt: `${theme.primaryAppBar?.height}px`,
+            mt: `${theme.primaryAppBar.height}px`,
             height: `calc(100vh - ${theme.primaryAppBar.height}px)`,
             overflow: "hidden",
         }}>

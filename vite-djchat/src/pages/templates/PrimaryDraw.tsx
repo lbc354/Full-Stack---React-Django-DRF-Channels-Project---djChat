@@ -59,7 +59,7 @@ const PrimaryDraw = () => {
             slotProps={{
                 paper: {
                     sx: {
-                        mt: `${theme.primaryAppBar?.height}px` || 0, // fallbacks in case `theme.primaryAppBar` is undefined
+                        mt: `${theme.primaryAppBar.height}px` || 0, // fallbacks in case `theme.primaryAppBar` is undefined
                         height: `calc(100vh - ${theme.primaryAppBar.height}px)`,
                         width: theme.primaryDraw.width,
                     },
