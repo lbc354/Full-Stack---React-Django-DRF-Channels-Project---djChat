@@ -1,6 +1,7 @@
 from django.contrib import admin
-from server.models import Category, Server, Channel
 
-admin.site.register(Category)
-admin.site.register(Server)
+from .models import Category, Channel, Server
+
 admin.site.register(Channel)
+admin.site.register(Server)
+admin.site.register(Category)
