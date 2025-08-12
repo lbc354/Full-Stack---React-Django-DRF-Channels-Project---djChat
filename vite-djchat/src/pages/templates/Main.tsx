@@ -1,24 +1,24 @@
-import { Box, Typography } from "@mui/material"
-import { useTheme } from "@mui/material/styles"
+import { Box } from "@mui/material";
+import { useTheme } from "@mui/material/styles";
+import { ReactNode } from "react";
 
-const Main = () => {
-    const theme = useTheme()
+type Props = {
+  children: ReactNode;
+};
 
-    return (
-        <Box sx={{
-            flexGrow: 1,
-            mt: `${theme.primaryAppBar.height}px`,
-            height: `calc(100vh - ${theme.primaryAppBar.height}px)`,
-            overflow: "hidden",
-        }}>
-            {[...Array(50)].map((_, i) => (
-                <Typography key={i} sx={{ mb: 2 }}>
-                    {i + 1}
-                </Typography>
-            ))}
-
-        </Box>
-    )
-}
-
-export default Main
+const Main: React.FC<Props> = ({ children }) => {
+  const theme = useTheme();
+  return (
+    <Box
+      sx={{
+        flexGrow: 1,
+        mt: `${theme.primaryAppBar.height}px`,
+        height: `calc(100vh - ${theme.primaryAppBar.height}px )`,
+        overflow: "hidden",
+      }}
+    >
+      {children}
+    </Box>
+  );
+};
+export default Main;

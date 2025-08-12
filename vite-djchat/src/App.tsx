@@ -1,26 +1,30 @@
-import { createBrowserRouter, createRoutesFromElements, Route, RouterProvider } from "react-router-dom"
-import Home from "./pages/Home"
-import createMuiTheme from "./theme/theme"
-import { ThemeProvider } from "@emotion/react"
+import Home from "./pages/Home";
+import Server from "./pages/Server";
+import Explore from "./pages/Explore";
+import {
+  createBrowserRouter,
+  createRoutesFromElements,
+  Route,
+  RouterProvider,
+} from "react-router-dom";
+import ToggleColorMode from "./components/ToggleColorMode";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
     <Route>
       <Route path="/" element={<Home />} />
+      <Route path="/server" element={<Server />} />
+      <Route path="/explore/:categoryName" element={<Explore />} />
     </Route>
   )
-)
+);
 
-// const App: React.FC = (name) => {
-// const App = (name: string) => {
-//   console.log(name)
 const App = () => {
-  const theme = createMuiTheme()
   return (
-    <ThemeProvider theme={theme}>
+    <ToggleColorMode>
       <RouterProvider router={router} />
-    </ThemeProvider>
-  )
-}
+    </ToggleColorMode>
+  );
+};
 
-export default App
+export default App;
