@@ -17,3 +17,5 @@ PS C:\Users\lucas.carregozi\Documents\django\Full Stack - React Django DRF Chann
 PS C:\Users\lucas.carregozi\Documents\django\Full Stack - React Django DRF Channels Project - djChat> pip install black
 
 PS C:\Users\lucas.carregozi\Documents\django\Full Stack - React Django DRF Channels Project - djChat\djchat> python manage.py startapp server
+
+PS C:\Users\lucas.carregozi\Documents\django\Full Stack - React Django DRF Channels Project - djChat\djchat> python manage.py startapp account
