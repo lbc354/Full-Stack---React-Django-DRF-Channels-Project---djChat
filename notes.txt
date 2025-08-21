@@ -1,0 +1,17 @@
+PS C:\Users\lucas.carregozi\Documents\django\Full Stack - React Django DRF Channels Project - djChat> python -m venv venv
+
+PS C:\Users\lucas.carregozi\Documents\django\Full Stack - React Django DRF Channels Project - djChat> .\venv\Scripts\activate
+
+PS C:\Users\lucas.carregozi\Documents\django\Full Stack - React Django DRF Channels Project - djChat> pip install django
+
+PS C:\Users\lucas.carregozi\Documents\django\Full Stack - React Django DRF Channels Project - djChat> python.exe -m pip install --upgrade pip
+
+PS C:\Users\lucas.carregozi\Documents\django\Full Stack - React Django DRF Channels Project - djChat> django-admin startproject djchat
+
+PS C:\Users\lucas.carregozi\Documents\django\Full Stack - React Django DRF Channels Project - djChat> pip install djangorestframework
+
+PS C:\Users\lucas.carregozi\Documents\django\Full Stack - React Django DRF Channels Project - djChat> pip freeze > requirements.txt
+
+PS C:\Users\lucas.carregozi\Documents\django\Full Stack - React Django DRF Channels Project - djChat\djchat> python manage.py runserver
+
+PS C:\Users\lucas.carregozi\Documents\django\Full Stack - React Django DRF Channels Project - djChat> pip install black
