@@ -1,11 +1,30 @@
+import Home from "./pages/Home";
+import Server from "./pages/Server";
+import Explore from "./pages/Explore";
+import {
+  createBrowserRouter,
+  createRoutesFromElements,
+  Route,
+  RouterProvider,
+} from "react-router-dom";
+import ToggleColorMode from "./components/ToggleColorMode";
 
-function App() {
-
-  return (
-    <>
-      <h1>Hello World</h1>
-    </>
+const router = createBrowserRouter(
+  createRoutesFromElements(
+    <Route>
+      <Route path="/" element={<Home />} />
+      <Route path="/server" element={<Server />} />
+      <Route path="/explore/:categoryName" element={<Explore />} />
+    </Route>
   )
-}
+);
 
-export default App
+const App = () => {
+  return (
+    <ToggleColorMode>
+      <RouterProvider router={router} />
+    </ToggleColorMode>
+  );
+};
+
+export default App;
