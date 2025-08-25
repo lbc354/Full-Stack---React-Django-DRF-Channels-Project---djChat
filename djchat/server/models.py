@@ -2,6 +2,7 @@ from django.db import models
 from django.conf import settings
 from django.dispatch import receiver
 from django.shortcuts import get_object_or_404
+from server.validators import validate_icon_image_size, validate_image_file_extension
 
 
 def category_icon_upload_path(instance, filename):
@@ -19,7 +20,12 @@ def channel_banner_upload_path(instance, filename):
 class Category(models.Model):
     name = models.CharField(max_length=100)
     description = models.TextField(blank=True, null=True)
-    icon = models.FileField(upload_to=category_icon_upload_path, null=True, blank=True)
+    icon = models.FileField(
+        upload_to=category_icon_upload_path,
+        null=True,
+        blank=True,
+        validators=[validate_icon_image_size, validate_image_file_extension],
+    )
 
     def save(self, *args, **kwargs):
         if self.id:  # (existing category)
@@ -64,9 +70,17 @@ class Channel(models.Model):
     server = models.ForeignKey(
         Server, on_delete=models.CASCADE, related_name="channel_server"
     )
-    icon = models.ImageField(upload_to=channel_icon_upload_path, null=True, blank=True)
+    icon = models.ImageField(
+        upload_to=channel_icon_upload_path,
+        null=True,
+        blank=True,
+        validators=[validate_icon_image_size, validate_image_file_extension],
+    )
     banner = models.ImageField(
-        upload_to=channel_banner_upload_path, null=True, blank=True
+        upload_to=channel_banner_upload_path,
+        null=True,
+        blank=True,
+        validators=[validate_image_file_extension],
     )
 
     @receiver(models.signals.pre_delete, sender="server.Channel")
