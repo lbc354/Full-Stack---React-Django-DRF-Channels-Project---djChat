@@ -5,6 +5,7 @@ from server.serializer import ServerSerializer
 from rest_framework.response import Response
 from rest_framework.exceptions import ValidationError, AuthenticationFailed
 from django.db.models import Count
+from server.schema import server_list_docs
 
 
 class ServerListViewSet(viewsets.ViewSet):
@@ -20,6 +21,7 @@ class ServerListViewSet(viewsets.ViewSet):
 
     queryset = Server.objects.all()
 
+    @server_list_docs
     def list(self, request):
         """
         Retrieve a list of servers, filtered and annotated based on the provided query parameters.
@@ -29,24 +31,22 @@ class ServerListViewSet(viewsets.ViewSet):
         allows limiting the number of results returned.
 
         Args:
-            request (Request): The HTTP request object containing query parameters.
-                - `category` (str, optional): Filter servers by category name.
-                - `by_user` (bool, optional): If true, filters servers by the authenticated user membership.
-                - `by_server_id` (int, optional): Filters a specific server by its ID.
-                - `with_num_members` (bool, optional): If true, includes a count of members in each server.
-                - `qty` (int, optional): Limits the number of servers returned.
+        - `category` (str, optional): Filter servers by category name.
+        - `by_user` (bool, optional): If true, filters servers by the authenticated user membership.
+        - `by_server_id` (int, optional): Filters a specific server by its ID.
+        - `with_num_members` (bool, optional): If true, includes a count of members in each server.
+        - `qty` (int, optional): Limits the number of servers returned.
 
         Returns:
-            Response: A JSON response containing a list of serialized server data.
+        - Response: A JSON response containing a list of serialized server data.
 
         Raises:
-            AuthenticationFailed: If the user is not authenticated when filtering by user membership.
-            ValidationError: If the provided `by_server_id` is not a valid integer or the server is not found.
+        - AuthenticationFailed: If the user is not authenticated when filtering by user membership.
+        - ValidationError: If the provided by_server_id is not a valid integer or the server is not found.
 
         Example:
-            GET /servers/?category=Games&by_user=true&with_num_members=true&qty=10
-            Returns a list of up to 10 servers in the "Games" category that the authenticated user is a member of,
-            including the number of members in each server.
+        - GET /servers/?category=Games&by_user=true&with_num_members=true&qty=10
+        - Returns a list of up to 10 servers in the "Games" category that the authenticated user is a member of, including the number of members in each server.
         """
 
         category = request.query_params.get("category")
@@ -58,23 +58,26 @@ class ServerListViewSet(viewsets.ViewSet):
         if category:
             self.queryset = self.queryset.filter(category__name=category)
 
+        # A linha if by_user or by_server_id and not request.user.is_authenticated falha porque respeita a ordem de precedência dos operadores lógicos em Python: not > and > or. Assim, ela é avaliada como by_user or (by_server_id and not authenticated), o que pode permitir acesso mesmo com o usuário anônimo. Para corrigir, use parênteses:
+        if (by_user or by_server_id) and not request.user.is_authenticated:
+            raise AuthenticationFailed()
+
         if by_user:
-            if request.user.is_authenticated:
-                user_id = request.user.id
-                self.queryset = self.queryset.filter(member=user_id)
-            else:
-                raise AuthenticationFailed()
+            user_id = request.user.id
+            self.queryset = self.queryset.filter(member=user_id)
 
         if by_server_id:
             try:
-                self.queryset = self.queryset.filter(id=by_server_id)
-                if not self.queryset.exists():
-                    raise ValidationError(
-                        detail=f"Server with id {by_server_id} not found."
-                    )
+                server_id_int = int(by_server_id)
             except ValueError:
                 raise ValidationError(
                     detail=f"Server id {by_server_id} must be an integer."
+                )
+
+            self.queryset = self.queryset.filter(id=server_id_int)
+            if not self.queryset.exists():
+                raise ValidationError(
+                    detail=f"Server with id {server_id_int} not found."
                 )
 
         if with_num_members:
