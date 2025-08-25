@@ -8,6 +8,14 @@ def category_icon_upload_path(instance, filename):
     return f"category/{instance.id}/category_icon/{filename}"
 
 
+def channel_icon_upload_path(instance, filename):
+    return f"channel/{instance.id}/channel_icons/{filename}"
+
+
+def channel_banner_upload_path(instance, filename):
+    return f"channel/{instance.id}/channel_banner/{filename}"
+
+
 class Category(models.Model):
     name = models.CharField(max_length=100)
     description = models.TextField(blank=True, null=True)
@@ -18,7 +26,7 @@ class Category(models.Model):
             existing = get_object_or_404(Category, id=self.id)
             if existing.icon != self.icon:
                 existing.icon.delete(save=False)
-        return super(Category, self).save(*args, **kwargs)
+        super(Category, self).save(*args, **kwargs)
 
     @receiver(models.signals.pre_delete, sender="server.Category")
     def category_delete_files(sender, instance, **kwargs):
@@ -56,8 +64,26 @@ class Channel(models.Model):
     server = models.ForeignKey(
         Server, on_delete=models.CASCADE, related_name="channel_server"
     )
+    icon = models.ImageField(upload_to=channel_icon_upload_path, null=True, blank=True)
+    banner = models.ImageField(
+        upload_to=channel_banner_upload_path, null=True, blank=True
+    )
+
+    @receiver(models.signals.pre_delete, sender="server.Channel")
+    def channel_delete_files(sender, instance, **kwargs):
+        for field in instance._meta.fields:
+            if field.name == "icon" or field.name == "banner":
+                file = getattr(instance, field.name)
+                if file:
+                    file.delete(save=False)
 
     def save(self, *args, **kwargs):
+        if self.id:  # (existing channel)
+            existing = get_object_or_404(Channel, id=self.id)
+            if existing.icon != self.icon:
+                existing.icon.delete(save=False)
+            if existing.banner != self.banner:
+                existing.banner.delete(save=False)
         self.name = self.name.lower()
         super(Channel, self).save(*args, **kwargs)
 
